@@ -129,11 +129,52 @@ void write_matrix_market_file(char* filename, vector< pair<node_t, node_t> > edg
   fclose(ofp);
 }
 
+void print_analysis(vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
+  // allocate space for edges, and degree counts
+  edge_t* deg = new edge_t[N];
+  edge_t max_degree = 0; node_t max_node = 0;
+  edge_t tail_verticies = 0;
+  memset(deg, 0, sizeof(edge_t) * N);
+
+  gettimeofday(&T1, NULL);
+  printf("Reading from vector to dense data.\n");
+  //assign to our internal structures
+  for(unsigned int i = 0; i<M; ++i) //iterate over edges - should use iterator :/
+  {
+    edges[i].first = edges[i].first;
+    dst[i] = edges[i].second;
+    deg[edges[i].first]++;
+    if(deg[edges[i].first] > max_degree){
+    	max_degree = deg[edges[i].first];
+    	max_node = edges[i].first;
+    }
+  }
+  for(unsigned int i = 0;i<N; ++i){
+  	if(deg[i] == 0){
+  		tail_verticies++;
+  	}
+  }
+  printf("Max degree: %i from node %i\n", max_degree, max_node);
+  printf("Tail verticies: %i\n", tail_verticies);
+  float sparseSize = ((float)(N*max_degree))/((float)(4*1024*1024));
+  printf("Unragged sparse size: %fGB\n", sparseSize);
+  float denseSize = ((float)(N*N))/((float)(4*1024*1024));
+  printf("Dense size: %fGB\n", denseSize);
+  printf("\n\n");
+  printf("Usable for GTX480 dense:  %s\n", (denseSize<1.53)?"yes":"no");
+  printf("Usable for GTX480 sparse: %s\n", (sparseSize<1.53)?"yes":"no");
+  printf("Usable for    K40 dense:  %s\n", (denseSize<11.5)?"yes":"no");
+  printf("Usable for    K40 sparse: %s\n", (sparseSize<11.5)?"yes":"no");
+
+  delete[] deg;
+}
+
 int main(int argc, char** argv){
   vector< pair<node_t, node_t> > edges;
   node_t vertex_count; 
   edge_t edge_count;
   bool undirected = false;
+  bool analyse = false;
   char* g_in = NULL;
   char* gm_out = NULL;
   char* mm_out = NULL;
@@ -153,6 +194,9 @@ int main(int argc, char** argv){
     }
     if (strcmp(argv[i], "-m") == 0){ //write to a green marl file
       mm_out = argv[i+1];
+    }
+    if (strcmp(argv[i], "-a") == 0){ //write to a green marl file
+      analyse = true;
     }
   }
   if(g_in == NULL){
@@ -174,6 +218,9 @@ int main(int argc, char** argv){
   }
   if(mm_out != NULL){
     write_matrix_market_file(mm_out, edges, vertex_count, edge_count);
+  }
+  if(analyse){
+    print_analysis(edges, vertex_count, edge_count);
   }
 
   return 0;
