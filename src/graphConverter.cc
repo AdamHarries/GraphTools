@@ -129,7 +129,7 @@ void write_matrix_market_file(char* filename, vector< pair<node_t, node_t> > edg
   fclose(ofp);
 }
 
-int main(int argc, const char** argv){
+int main(int argc, char** argv){
   vector< pair<node_t, node_t> > edges;
   node_t vertex_count; 
   edge_t edge_count;
