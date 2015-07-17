@@ -14,9 +14,9 @@ vpath %.cc $(SRC)
 all: $(OUT) Makefile
 
 
-$(BIN)/graphConverter: $(OBJ)/graphConverter.o $(LIB)/libgmgraph.a
+$(BIN)/graphConverter: $(OBJ)/graphConverter.o $(LIB)/libgmgraph.a $(OBJ)/mmio.o
 	if [ ! -d bin ]; then mkdir bin; fi
-	$(CC) $(CFLAGS) $(OBJ)/graphConverter.o $(LFLAGS) -L$(LIB) -lgmgraph -o $@	
+	$(CC) $(CFLAGS) $(OBJ)/graphConverter.o $(OBJ)/mmio.o $(LFLAGS) -L$(LIB) -lgmgraph -o $@	
 
 $(OBJ)/%.o: %.cc 
 	if [ ! -d obj ]; then mkdir obj; fi
