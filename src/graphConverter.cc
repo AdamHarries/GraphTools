@@ -68,9 +68,9 @@ void write_green_marl_file(char* filename, vector< pair<node_t, node_t> > edges,
   printf("Calculating degrees.\n");
   for(unsigned int i = 0; i<M; ++i) //iterate over edges - should use iterator :/
   {
-    adj[i].first = adj[i].first;
-    adj[i].second = adj[i].second;
-    deg[adj[i].first]++;
+    edges[i].first = edges[i].first;
+    edges[i].second = edges[i].second;
+    deg[edges[i].first]++;
   }
 
   printf("Setting gm_graph degrees\n");
@@ -83,8 +83,8 @@ void write_green_marl_file(char* filename, vector< pair<node_t, node_t> > edges,
   
   printf("Adding edges\n");
   for (edge_t i = 0; i < M; i++) {
-    node_t u = adj[i].first;
-    node_t v = adj[i].second;
+    node_t u = edges[i].first;
+    node_t v = edges[i].second;
 
     edge_t pos = deg[u]--;
     assert(pos > 0);
@@ -105,7 +105,7 @@ void write_green_marl_file(char* filename, vector< pair<node_t, node_t> > edges,
   delete[] deg;
 }
 
-void write_matrix_market_file(char* filename vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
+void write_matrix_market_file(char* filename, vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
   FILE *ofp;
   if ((ofp = fopen(filename, "w")) == NULL) {
     printf("Error: output file is invalid\n");
