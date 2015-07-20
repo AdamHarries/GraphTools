@@ -141,8 +141,6 @@ void print_analysis(vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
   //assign to our internal structures
   for(unsigned int i = 0; i<M; ++i) //iterate over edges - should use iterator :/
   {
-    edges[i].first = edges[i].first;
-    dst[i] = edges[i].second;
     deg[edges[i].first]++;
     if(deg[edges[i].first] > max_degree){
     	max_degree = deg[edges[i].first];
@@ -204,11 +202,12 @@ int main(int argc, char** argv){
     printf("Specify a file using either -u (for undirected) or -d (for directed)\n");
     exit(1);
   }
-  if((gm_out == NULL) and (mm_out == NULL)){
-    printf("No output graph file specified. Failing.\n");
+  if((gm_out == NULL) and (mm_out == NULL) and (!analyse)){
+    printf("No output graph file specified, and analysis not expected. Failing.\n");
     printf("Specify a file using either -g (for green-marl) or -m (for matrix-market)\n");
     exit(1);
   }
+  printf("Input file %s\n", g_in);
   edges = parse_adjacency_file(g_in, undirected);
   vertex_count = max_node(edges)+1;
   edge_count = edges.size();
