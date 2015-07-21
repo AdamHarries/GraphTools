@@ -132,8 +132,11 @@ void write_matrix_market_file(char* filename, vector< pair<node_t, node_t> > edg
 void print_analysis(vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
   // allocate space for edges, and degree counts
   edge_t* deg = new edge_t[N];
+  edge_t* ine = new edge_t[N];
   edge_t max_degree = 0; node_t max_node = 0;
   edge_t tail_verticies = 0;
+  edge_t disc_verticies = 0;
+  memset(deg, 0, sizeof(edge_t) * N);
   memset(deg, 0, sizeof(edge_t) * N);
 
   gettimeofday(&T1, NULL);
@@ -142,6 +145,7 @@ void print_analysis(vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
   for(unsigned int i = 0; i<M; ++i) //iterate over edges - should use iterator :/
   {
     deg[edges[i].first]++;
+    ine[edges[i].second]++;
     if(deg[edges[i].first] > max_degree){
     	max_degree = deg[edges[i].first];
     	max_node = edges[i].first;
@@ -150,10 +154,14 @@ void print_analysis(vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
   for(unsigned int i = 0;i<N; ++i){
   	if(deg[i] == 0){
   		tail_verticies++;
+      if(ine[i] == 0){
+        disc_verticies++;
+      }
   	}
   }
   printf("Max degree: %i from node %i\n", max_degree, max_node);
   printf("Tail verticies: %i\n", tail_verticies);
+  printf("Disconnected verticies: %i\n", disc_verticies);
   float sparseSize = ((float)(N*max_degree))/((float)(4*1024*1024));
   printf("Unragged sparse size: %fGB\n", sparseSize);
   float denseSize = ((float)(N*N))/((float)(4*1024*1024));
