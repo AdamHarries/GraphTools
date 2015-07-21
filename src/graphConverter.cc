@@ -135,9 +135,10 @@ void print_analysis(vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
   edge_t* ine = new edge_t[N];
   edge_t max_degree = 0; node_t max_node = 0;
   edge_t tail_verticies = 0;
+  edge_t head_verticies = 0;
   edge_t disc_verticies = 0;
   memset(deg, 0, sizeof(edge_t) * N);
-  memset(deg, 0, sizeof(edge_t) * N);
+  memset(ine, 0, sizeof(edge_t) * N);
 
   gettimeofday(&T1, NULL);
   printf("Reading from vector to dense data.\n");
@@ -152,15 +153,19 @@ void print_analysis(vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
     }
   }
   for(unsigned int i = 0;i<N; ++i){
-  	if(deg[i] == 0){
+  	if(deg[i] == 0 && ine[i] != 0){
   		tail_verticies++;
-      if(ine[i] == 0){
-        disc_verticies++;
-      }
   	}
+    if(ine[i] == 0 && deg[i] != 0){
+      head_verticies++;
+    }
+    if(ine[i] == 0 && deg[i] == 0){
+      disc_verticies++;
+    }
   }
   printf("Max degree: %i from node %i\n", max_degree, max_node);
   printf("Tail verticies: %i\n", tail_verticies);
+  printf("Head verticies: %i\n", head_verticies);
   printf("Disconnected verticies: %i\n", disc_verticies);
   float sparseSize = ((float)(N*max_degree))/((float)(4*1024*1024));
   printf("Unragged sparse size: %fGB\n", sparseSize);
