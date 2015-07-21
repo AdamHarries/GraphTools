@@ -163,6 +163,8 @@ void print_analysis(vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
       disc_verticies++;
     }
   }
+  printf("Nodes %d,  Edges %d\n", N, M);
+  printf("0 vertex: %d outgoing edges, %d incoming\n", deg[0], inc[0]);
   printf("Max degree: %i from node %i\n", max_degree, max_node);
   printf("Tail verticies: %i\n", tail_verticies);
   printf("Head verticies: %i\n", head_verticies);
