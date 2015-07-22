@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <limits.h>
 #include <map>
 #include <vector>
 #include <assert.h>
@@ -37,20 +38,29 @@ vector< pair<node_t, node_t> > parse_adjacency_file(char* filename, bool undirec
   return adjVector;
 }
 
-node_t max_node(std::vector<pair<node_t, node_t> > list){
-  node_t mNode = 0;
+node_t vertex_count(std::vector<pair<node_t, node_t> > list){
+  node_t maxNode = 0;
+  node_t minNode = UINT_MAX;
   for(std::vector< pair<node_t, node_t> >::iterator it = list.begin(); it!= list.end(); ++it)
   {
-    if((*it).first > mNode)
+    if((*it).first > maxNode)
     {
-      mNode = (*it).first;
+      maxNode = (*it).first;
     }
-    if((*it).second > mNode)
+    if((*it).second > maxNode)
     {
-      mNode = (*it).first;
+      maxNode = (*it).first;
+    }
+    if((*it).first < minNode)
+    {
+      minNode = (*it).first;
+    }
+    if((*it).second < minNode)
+    {
+      minNode = (*it).first;
     }
   }
-  return mNode;
+  return (maxNode-minNode)+1; // works for N>1
 }
 
 void write_green_marl_file(char* filename, vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
@@ -228,7 +238,7 @@ int main(int argc, char** argv){
   }
   printf("Input file %s\n", g_in);
   edges = parse_adjacency_file(g_in, undirected);
-  vertex_count = max_node(edges)+1;
+  vertex_count = vertex_count(edges);
   edge_count = edges.size();
 
   if(gm_out != NULL){
