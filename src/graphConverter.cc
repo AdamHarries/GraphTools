@@ -268,7 +268,7 @@ int main(int argc, char** argv){
     write_matrix_market_file(mm_out, edges, vertex_count, edge_count);
   }
   if(fw_out != NULL){
-    write_apart_file(mm_out, edges, vertex_count, edge_count);
+    write_apart_file(fw_out, edges, vertex_count, edge_count);
   }
   if(analyse){
     print_analysis(edges, vertex_count, edge_count);
