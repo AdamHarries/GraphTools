@@ -115,6 +115,22 @@ void write_green_marl_file(char* filename, vector< pair<node_t, node_t> > edges,
   delete[] deg;
 }
 
+void write_apart_file(char* filename, vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
+  FILE *ofp;
+  if ((ofp = fopen(filename, "w")) == NULL) {
+    printf("Error: output file is invalid\n");
+    exit(1);
+  }
+  printf("Found %i Nodes, %i Edges\n", N, M);
+
+  for(unsigned int i = 0; i<M; i++){
+    fprintf(ofp, "%d %d\n", edges[i].first, edges[i].second);
+  }
+
+  fclose(ofp);
+}
+
+
 void write_matrix_market_file(char* filename, vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
   FILE *ofp;
   if ((ofp = fopen(filename, "w")) == NULL) {
@@ -205,6 +221,7 @@ int main(int argc, char** argv){
   char* g_in = NULL;
   char* gm_out = NULL;
   char* mm_out = NULL;
+  char* fw_out = NULL;
 
   for(int i = 1;i<argc;i++) //iterate over arguments - the first arg won't ever be one we care about.
   {
@@ -216,13 +233,16 @@ int main(int argc, char** argv){
       g_in = argv[i+1];
       undirected = false;
     }
-    if (strcmp(argv[i], "-g") == 0){ //write to a green marl file
+    if (strcmp(argv[i], "-g") == 0){ // write to a green marl file
       gm_out = argv[i+1];
     }
-    if (strcmp(argv[i], "-m") == 0){ //write to a green marl file
+    if (strcmp(argv[i], "-m") == 0){ // write to a mtx
       mm_out = argv[i+1];
     }
-    if (strcmp(argv[i], "-a") == 0){ //write to a green marl file
+    if (strcmp(argv[i], "-f") == 0){ // write to a file usable by the framework
+      fw_out = argv[i+1];
+    }
+    if (strcmp(argv[i], "-a") == 0){ // just analyse the data
       analyse = true;
     }
   }
@@ -231,7 +251,7 @@ int main(int argc, char** argv){
     printf("Specify a file using either -u (for undirected) or -d (for directed)\n");
     exit(1);
   }
-  if((gm_out == NULL) and (mm_out == NULL) and (!analyse)){
+  if((gm_out == NULL) and (mm_out == NULL) (fw_out == NULL) and (!analyse)){
     printf("No output graph file specified, and analysis not expected. Failing.\n");
     printf("Specify a file using either -g (for green-marl) or -m (for matrix-market)\n");
     exit(1);
@@ -246,6 +266,9 @@ int main(int argc, char** argv){
   }
   if(mm_out != NULL){
     write_matrix_market_file(mm_out, edges, vertex_count, edge_count);
+  }
+  if(fw_out != NULL){
+    write_apart_file(mm_out, edges, vertex_count, edge_count);
   }
   if(analyse){
     print_analysis(edges, vertex_count, edge_count);
