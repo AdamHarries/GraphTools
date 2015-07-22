@@ -238,7 +238,7 @@ int main(int argc, char** argv){
   }
   printf("Input file %s\n", g_in);
   edges = parse_adjacency_file(g_in, undirected);
-  vertex_count = vertex_count(edges);
+  vertex_count = count_verticies(edges);
   edge_count = edges.size();
 
   if(gm_out != NULL){
