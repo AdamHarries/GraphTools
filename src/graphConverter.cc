@@ -169,9 +169,9 @@ void print_analysis(vector< pair<node_t, node_t> > edges, node_t N, edge_t M){
   printf("Tail verticies: %i\n", tail_verticies);
   printf("Head verticies: %i\n", head_verticies);
   printf("Disconnected verticies: %i\n", disc_verticies);
-  float sparseSize = ((float)(N*max_degree))/((float)(4*1024*1024));
+  float sparseSize = ((float)(N*max_degree*8))/((float)(1024*1024*1024));
   printf("Unragged sparse size: %fGB\n", sparseSize);
-  float denseSize = ((float)(N*N))/((float)(4*1024*1024));
+  float denseSize = ((float)(N*N*4))/((float)(1024*1024*1024));
   printf("Dense size: %fGB\n", denseSize);
   printf("\n\n");
   printf("Usable for GTX480 dense:  %s\n", (denseSize<1.53)?"yes":"no");
