@@ -251,7 +251,7 @@ int main(int argc, char** argv){
     printf("Specify a file using either -u (for undirected) or -d (for directed)\n");
     exit(1);
   }
-  if((gm_out == NULL) and (mm_out == NULL) (fw_out == NULL) and (!analyse)){
+  if((gm_out == NULL) and (mm_out == NULL) and (fw_out == NULL) and (!analyse)){
     printf("No output graph file specified, and analysis not expected. Failing.\n");
     printf("Specify a file using either -g (for green-marl) or -m (for matrix-market)\n");
     exit(1);
