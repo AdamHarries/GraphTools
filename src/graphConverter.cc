@@ -38,7 +38,7 @@ vector< pair<node_t, node_t> > parse_adjacency_file(char* filename, bool undirec
   return adjVector;
 }
 
-node_t vertex_count(std::vector<pair<node_t, node_t> > list){
+node_t count_verticies(std::vector<pair<node_t, node_t> > list){
   node_t maxNode = 0;
   node_t minNode = UINT_MAX;
   for(std::vector< pair<node_t, node_t> >::iterator it = list.begin(); it!= list.end(); ++it)
