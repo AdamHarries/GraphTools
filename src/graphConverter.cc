@@ -147,9 +147,9 @@ void write_matrix_market_file(char* filename, vector< pair<node_t, node_t> > edg
   mm_set_real(&matcode);
 
   mm_write_banner(ofp, matcode); 
-  mm_write_mtx_crd_size(ofp, N, N, M);
+  mm_write_mtx_crd_size(ofp, N-1, N-1, M);
   for(unsigned int i = 0; i<M; i++){
-    fprintf(ofp, "%d %d 1.0\n", edges[i].first, edges[i].second);
+    fprintf(ofp, "%d %d 1.0\n", edges[i].first+1, edges[i].second+1);
   }
 
   fclose(ofp);
